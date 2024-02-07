@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch Shop</title>
+    <style>
+        
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .watch-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 16px;
+            padding: 16px;
+            width: 300px;
+        }
+        #watchContainer{
+            align-items: center;
+            position: relative;
+            margin-top: 4%;
+            padding: 10px;
+        }    
+
+
+        .buy-button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Watch Shop</h1>
+    <div id="watchContainer"></div>
+
+    <script>
+        async function fetchAndRenderWatches() {
+            try {
+                const response = await fetch('/upload/all');
+                const watches = await response.json();
+
+                const watchContainer = document.getElementById('watchContainer');
+
+                watches.forEach(watch => {
+                    const watchCard = document.createElement('div');
+                    watchCard.classList.add('watch-card');
+                    watchCard.innerHTML = `
+                        <h3>${watch.title}</h3>
+                        <p>${watch.description}</p>
+                        <p>Created at: ${new Date(watch.createdAt).toLocaleString()}</p>
+                        <button class="buy-button" onclick="redirectToCart()">Buy</button>
+                    `;
+                    watchContainer.appendChild(watchCard);
+                });
+            } catch (error) {
+                console.error('Error fetching watch data:', error);
+            }
+        }
+
+        function redirectToCart() {
+            
+            window.location.href = '../Cart/cart.html';
+        }
+
+        fetchAndRenderWatches();
+    </script>
+</body>
+</html>
